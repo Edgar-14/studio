@@ -49,7 +49,7 @@ export default function BillingPage() {
   return (
     <div className="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
       <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
-        <Card className="sm:col-span-2">
+        <Card className="sm:col-span-2 transition-all hover:shadow-lg hover:-translate-y-1">
           <CardHeader className="pb-3">
             <CardTitle className="font-headline">Your Credits</CardTitle>
             <CardDescription className="max-w-lg text-balance leading-relaxed">
@@ -65,7 +65,7 @@ export default function BillingPage() {
           </CardContent>
         </Card>
         {creditPackages.map((pkg) => (
-            <Card key={pkg.credits}>
+            <Card key={pkg.credits} className="transition-all hover:shadow-lg hover:-translate-y-1">
                  <CardHeader className="pb-2">
                     <CardDescription>{pkg.description}</CardDescription>
                     <CardTitle className="text-4xl">{pkg.price}</CardTitle>
@@ -82,7 +82,7 @@ export default function BillingPage() {
             </Card>
         ))}
       </div>
-      <Card>
+      <Card className="transition-all hover:shadow-lg">
         <CardHeader>
           <CardTitle className="font-headline">Billing History</CardTitle>
           <CardDescription>

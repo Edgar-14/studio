@@ -45,7 +45,7 @@ export default function DiagnosticsPage() {
         </div>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
         {integrations.map((integration) => (
-            <Card key={integration.name}>
+            <Card key={integration.name} className="transition-all hover:shadow-lg hover:-translate-y-1">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-base font-medium">
                 {integration.name}
