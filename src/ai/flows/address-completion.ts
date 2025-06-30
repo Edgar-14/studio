@@ -12,13 +12,13 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const AddressCompletionInputSchema = z.object({
-  address: z.string().describe('The address to validate and auto-complete.'),
+  address: z.string().describe('La dirección a validar y autocompletar.'),
 });
 export type AddressCompletionInput = z.infer<typeof AddressCompletionInputSchema>;
 
 const AddressCompletionOutputSchema = z.object({
-  validatedAddress: z.string().describe('The validated and auto-completed address.'),
-  confidenceLevel: z.number().describe('A confidence level (0-1) indicating the accuracy of the completion.'),
+  validatedAddress: z.string().describe('La dirección validada y autocompletada.'),
+  confidenceLevel: z.number().describe('Un nivel de confianza (0-1) que indica la precisión de la finalización.'),
 });
 export type AddressCompletionOutput = z.infer<typeof AddressCompletionOutputSchema>;
 
@@ -28,23 +28,23 @@ export async function addressCompletion(input: AddressCompletionInput): Promise<
 
 const getAddressDetails = ai.defineTool({
   name: 'getAddressDetails',
-  description: 'Retrieves detailed information about an address using Google Maps.',
+  description: 'Recupera información detallada sobre una dirección usando Google Maps.',
   inputSchema: z.object({
-    address: z.string().describe('The address to retrieve details for.'),
+    address: z.string().describe('La dirección para la cual recuperar detalles.'),
   }),
   outputSchema: z.object({
-    formattedAddress: z.string().describe('The fully formatted address.'),
-    latitude: z.number().describe('The latitude of the address.'),
-    longitude: z.number().describe('The longitude of the address.'),
+    formattedAddress: z.string().describe('La dirección completamente formateada.'),
+    latitude: z.number().describe('La latitud de la dirección.'),
+    longitude: z.number().describe('La longitud de la dirección.'),
   }),
 }, async (input) => {
-  // Placeholder implementation for retrieving address details from Google Maps.
-  // In a real application, this would call the Google Maps API.
-  // This mock implementation simply returns the input address with some mock coordinates.
+  // Implementación de marcador de posición para recuperar detalles de la dirección de Google Maps.
+  // En una aplicación real, esto llamaría a la API de Google Maps.
+  // Esta implementación simulada simplemente devuelve la dirección de entrada con algunas coordenadas simuladas.
   return {
-    formattedAddress: `Mock: ${input.address}`,
-    latitude: 34.052235, // Mock latitude for Los Angeles
-    longitude: -118.243683, // Mock longitude for Los Angeles
+    formattedAddress: `Simulado: ${input.address}`,
+    latitude: 34.052235, // Latitud simulada para Los Ángeles
+    longitude: -118.243683, // Longitud simulada para Los Ángeles
   };
 });
 
@@ -53,15 +53,15 @@ const addressCompletionPrompt = ai.definePrompt({
   tools: [getAddressDetails],
   input: {schema: AddressCompletionInputSchema},
   output: {schema: AddressCompletionOutputSchema},
-  prompt: `You are an AI assistant designed to validate and auto-complete addresses.
+  prompt: `Eres un asistente de IA diseñado para validar y autocompletar direcciones.
 
-  The user will provide an address, and you should use the getAddressDetails tool to retrieve detailed information about the address.
+  El usuario proporcionará una dirección y debes usar la herramienta getAddressDetails para recuperar información detallada sobre la dirección.
 
-  Based on the information retrieved, validate and auto-complete the address, providing a confidence level (0-1) indicating the accuracy of the completion.
+  Basado en la información recuperada, valida y autocompleta la dirección, proporcionando un nivel de confianza (0-1) que indique la precisión de la finalización.
 
-  Address provided by user: {{{address}}}
+  Dirección proporcionada por el usuario: {{{address}}}
 
-  If the address is not valid, return a validatedAddress that is empty.
+  Si la dirección no es válida, devuelve un validatedAddress que esté vacío.
   `,
 });
 

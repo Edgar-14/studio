@@ -12,14 +12,14 @@ export default function NewOrderPage() {
     <div className="mx-auto grid w-full max-w-4xl flex-1 auto-rows-max gap-4">
       <div className="flex items-center gap-4">
         <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0 font-headline">
-          Create New Order
+          Crear Nuevo Pedido
         </h1>
       </div>
-      <Card>
+      <Card className="glass-card">
         <CardHeader>
-          <CardTitle>Order Details</CardTitle>
+          <CardTitle>Detalles del Pedido</CardTitle>
           <CardDescription>
-            Fill in the details below to create a new delivery order.
+            Completa los siguientes datos para crear un nuevo pedido de entrega.
           </CardDescription>
         </CardHeader>
         <CardContent>

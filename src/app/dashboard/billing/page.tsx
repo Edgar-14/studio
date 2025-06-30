@@ -22,26 +22,26 @@ const billingHistory = [
   {
     invoice: "INV001",
     date: "2023-11-20",
-    description: "Credit Recharge (500)",
+    description: "Recarga de Créditos (500)",
     amount: "$50.00",
   },
   {
     invoice: "INV002",
     date: "2023-10-15",
-    description: "Credit Recharge (200)",
+    description: "Recarga de Créditos (200)",
     amount: "$20.00",
   },
   {
     invoice: "INV003",
     date: "2023-09-01",
-    description: "Monthly Plan",
+    description: "Plan Mensual",
     amount: "$99.00",
   },
 ]
 
 const creditPackages = [
-    { credits: 100, price: "$10", description: "Basic" },
-    { credits: 500, price: "$45", description: "Standard" },
+    { credits: 100, price: "$10", description: "Básico" },
+    { credits: 500, price: "$45", description: "Estándar" },
     { credits: 1000, price: "$80", description: "Pro" }
 ]
 
@@ -49,54 +49,54 @@ export default function BillingPage() {
   return (
     <div className="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
       <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
-        <Card className="sm:col-span-2 transition-all hover:shadow-lg hover:-translate-y-1">
+        <Card className="sm:col-span-2 transition-all hover:shadow-lg hover:-translate-y-1 glass-card">
           <CardHeader className="pb-3">
-            <CardTitle className="font-headline">Your Credits</CardTitle>
+            <CardTitle className="font-headline">Tus Créditos</CardTitle>
             <CardDescription className="max-w-lg text-balance leading-relaxed">
-              Manage your credits for creating new orders.
+              Administra tus créditos para crear nuevos pedidos.
             </CardDescription>
           </CardHeader>
           <CardFooter>
             <div className="text-4xl font-bold">234</div>
-            <div className="ml-2 flex-1 text-sm text-muted-foreground">/ 500 Credits</div>
+            <div className="ml-2 flex-1 text-sm text-muted-foreground">/ 500 Créditos</div>
           </CardFooter>
           <CardContent>
-             <Progress value={234/500 * 100} aria-label="Credit usage" />
+             <Progress value={234/500 * 100} aria-label="Uso de crédito" />
           </CardContent>
         </Card>
         {creditPackages.map((pkg) => (
-            <Card key={pkg.credits} className="transition-all hover:shadow-lg hover:-translate-y-1">
+            <Card key={pkg.credits} className="transition-all hover:shadow-lg hover:-translate-y-1 glass-card">
                  <CardHeader className="pb-2">
                     <CardDescription>{pkg.description}</CardDescription>
                     <CardTitle className="text-4xl">{pkg.price}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <div className="text-xs text-muted-foreground">{pkg.credits} delivery credits</div>
+                    <div className="text-xs text-muted-foreground">{pkg.credits} créditos de entrega</div>
                 </CardContent>
                 <CardFooter>
-                    <Button className="w-full">
+                    <Button className="w-full btn-gradient">
                         <Zap className="mr-2 h-4 w-4" />
-                        Recharge
+                        Recargar
                     </Button>
                 </CardFooter>
             </Card>
         ))}
       </div>
-      <Card className="transition-all hover:shadow-lg">
+      <Card className="transition-all hover:shadow-lg glass-card">
         <CardHeader>
-          <CardTitle className="font-headline">Billing History</CardTitle>
+          <CardTitle className="font-headline">Historial de Facturación</CardTitle>
           <CardDescription>
-            View your past transactions and invoices.
+            Consulta tus transacciones y facturas pasadas.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Invoice</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead>Description</TableHead>
-                <TableHead className="text-right">Amount</TableHead>
+                <TableHead>Factura</TableHead>
+                <TableHead>Fecha</TableHead>
+                <TableHead>Descripción</TableHead>
+                <TableHead className="text-right">Monto</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

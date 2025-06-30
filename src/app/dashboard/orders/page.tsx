@@ -20,63 +20,63 @@ const orders = [
     orderId: "ORD001",
     customer: "Liam Johnson",
     date: "2023-11-23",
-    status: "Delivered",
+    status: "Entregado",
     total: "$250.00",
   },
   {
     orderId: "ORD002",
     customer: "Olivia Smith",
     date: "2023-11-24",
-    status: "In Transit",
+    status: "En Tránsito",
     total: "$150.00",
   },
   {
     orderId: "ORD003",
     customer: "Noah Williams",
     date: "2023-11-24",
-    status: "Pending",
+    status: "Pendiente",
     total: "$350.00",
   },
   {
     orderId: "ORD004",
     customer: "Emma Brown",
     date: "2023-11-25",
-    status: "Delivered",
+    status: "Entregado",
     total: "$450.00",
   },
   {
     orderId: "ORD005",
     customer: "Ava Jones",
     date: "2023-11-26",
-    status: "Canceled",
+    status: "Cancelado",
     total: "$550.00",
   },
 ]
 
 const statusVariant: { [key: string]: "default" | "secondary" | "outline" | "destructive" } = {
-    Delivered: "default",
-    "In Transit": "secondary",
-    Pending: "outline",
-    Canceled: "destructive",
+    "Entregado": "default",
+    "En Tránsito": "secondary",
+    "Pendiente": "outline",
+    "Cancelado": "destructive",
 }
 
 export default function OrdersPage() {
   return (
-    <Card>
+    <Card className="glass-card">
       <CardHeader>
-        <CardTitle className="font-headline">Order Status</CardTitle>
+        <CardTitle className="font-headline">Estado de Pedidos</CardTitle>
         <CardDescription>
-          Track the real-time status of your deliveries.
+          Sigue el estado en tiempo real de tus entregas.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Order ID</TableHead>
-              <TableHead>Customer</TableHead>
-              <TableHead>Date</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead>ID de Pedido</TableHead>
+              <TableHead>Cliente</TableHead>
+              <TableHead>Fecha</TableHead>
+              <TableHead>Estado</TableHead>
               <TableHead className="text-right">Total</TableHead>
             </TableRow>
           </TableHeader>

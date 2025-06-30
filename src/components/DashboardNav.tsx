@@ -20,13 +20,13 @@ import {
 } from "@/components/ui/tooltip"
 
 const links = [
-  { href: "/dashboard/new-order", label: "New Order", icon: PlusCircle },
-  { href: "/dashboard/orders", label: "Orders", icon: ListOrdered },
-  { href: "/dashboard/billing", label: "Billing", icon: CreditCard },
-  { href: "/dashboard/settings", label: "Settings", icon: Settings },
+  { href: "/dashboard/new-order", label: "Nuevo Pedido", icon: PlusCircle },
+  { href: "/dashboard/orders", label: "Pedidos", icon: ListOrdered },
+  { href: "/dashboard/billing", label: "Facturación", icon: CreditCard },
+  { href: "/dashboard/settings", label: "Ajustes", icon: Settings },
   {
     href: "/dashboard/diagnostics",
-    label: "Diagnostics",
+    label: "Diagnóstico",
     icon: HeartPulse,
   },
 ]
@@ -51,8 +51,8 @@ export function DashboardNav({ isCollapsed }: { isCollapsed: boolean }) {
                 <Link
                   href={link.href}
                   className={cn(
-                    "group flex items-center gap-4 rounded-lg px-3 py-2 text-muted-foreground transition-colors hover:text-foreground",
-                    isActive && "bg-primary/10 text-primary",
+                    "group flex items-center gap-4 rounded-lg px-3 py-2 text-muted-foreground transition-colors hover:text-foreground hover:bg-muted",
+                    isActive && "bg-primary/20 text-foreground",
                     isCollapsed ? "justify-center" : ""
                   )}
                 >
@@ -60,7 +60,7 @@ export function DashboardNav({ isCollapsed }: { isCollapsed: boolean }) {
                   <span className={cn(isCollapsed && "sr-only")}>
                     {link.label}
                   </span>
-                  {link.label === "Orders" && !isCollapsed && (
+                  {link.label === "Pedidos" && !isCollapsed && (
                     <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
                       3
                     </Badge>

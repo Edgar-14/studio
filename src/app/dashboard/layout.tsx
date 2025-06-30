@@ -18,10 +18,10 @@ export default function DashboardLayout({
   const [isCollapsed, setIsCollapsed] = useState(false)
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-transparent">
+    <div className="flex min-h-screen w-full flex-col">
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-10 hidden flex-col border-r bg-background/90 backdrop-blur-sm transition-all duration-300 sm:flex",
+          "fixed inset-y-0 left-0 z-10 hidden flex-col border-r bg-background/80 backdrop-blur-sm transition-all duration-300 sm:flex",
           isCollapsed ? "w-16" : "w-60"
         )}
       >
@@ -51,13 +51,13 @@ export default function DashboardLayout({
           isCollapsed ? "sm:pl-16" : "sm:pl-60"
         )}
       >
-        <header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-4 border-b bg-background/90 px-4 backdrop-blur-sm sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+        <header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-4 border-b bg-background/80 px-4 backdrop-blur-sm sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
           <div className="flex items-center gap-2">
             <Sheet>
               <SheetTrigger asChild>
                 <Button size="icon" variant="outline" className="sm:hidden">
                   <PanelLeft className="h-5 w-5" />
-                  <span className="sr-only">Toggle Menu</span>
+                  <span className="sr-only">Alternar Menú</span>
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="sm:max-w-xs bg-background/95 backdrop-blur-sm">
@@ -79,7 +79,7 @@ export default function DashboardLayout({
               onClick={() => setIsCollapsed(!isCollapsed)}
             >
               <PanelLeft className="h-5 w-5" />
-              <span className="sr-only">Toggle Sidebar</span>
+              <span className="sr-only">Alternar Barra Lateral</span>
             </Button>
           </div>
           <UserNav />

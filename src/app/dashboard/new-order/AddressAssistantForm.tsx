@@ -26,9 +26,9 @@ import { Card, CardContent } from "@/components/ui/card"
 import { useToast } from "@/hooks/use-toast"
 
 const formSchema = z.object({
-  customerName: z.string().min(2, "Name must be at least 2 characters."),
-  customerPhone: z.string().min(10, "Phone number seems too short."),
-  customerAddress: z.string().min(10, "Address seems too short."),
+  customerName: z.string().min(2, "El nombre debe tener al menos 2 caracteres."),
+  customerPhone: z.string().min(10, "El número de teléfono parece demasiado corto."),
+  customerAddress: z.string().min(10, "La dirección parece demasiado corta."),
   orderId: z.string().optional(),
   notes: z.string().optional(),
 })
@@ -82,8 +82,8 @@ export function AddressAssistantForm() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values)
     toast({
-      title: "Order Created!",
-      description: "The new delivery order has been successfully created.",
+      title: "¡Pedido Creado!",
+      description: "El nuevo pedido de entrega ha sido creado exitosamente.",
     })
     form.reset()
     setCompletion(null)
@@ -105,7 +105,7 @@ export function AddressAssistantForm() {
             name="customerName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Customer Name</FormLabel>
+                <FormLabel>Nombre del Cliente</FormLabel>
                 <FormControl>
                   <Input placeholder="Jane Doe" {...field} />
                 </FormControl>
@@ -118,7 +118,7 @@ export function AddressAssistantForm() {
             name="customerPhone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Customer Phone</FormLabel>
+                <FormLabel>Teléfono del Cliente</FormLabel>
                 <FormControl>
                   <Input placeholder="(555) 123-4567" {...field} />
                 </FormControl>
@@ -133,10 +133,10 @@ export function AddressAssistantForm() {
           name="customerAddress"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Customer Address</FormLabel>
+              <FormLabel>Dirección del Cliente</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Start typing an address to see AI suggestions..."
+                  placeholder="Empieza a escribir una dirección para ver sugerencias de la IA..."
                   className="resize-none"
                   {...field}
                 />
@@ -149,22 +149,22 @@ export function AddressAssistantForm() {
         {isPending && (
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Loader2 className="h-4 w-4 animate-spin" />
-            <span>AI is validating address...</span>
+            <span>La IA está validando la dirección...</span>
           </div>
         )}
 
         {completion && (
-          <Card className="bg-accent/20 border-accent/50">
+          <Card className="bg-primary/10 border-primary/20">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
                   <div className="flex items-center gap-2 font-semibold text-primary">
                     <Wand2 className="h-5 w-5" />
-                    <span>AI Suggestion</span>
+                    <span>Sugerencia de la IA</span>
                   </div>
                   <p className="mt-2 text-sm">{completion.validatedAddress}</p>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Confidence:{" "}
+                    Confianza:{" "}
                     <span className="font-medium text-foreground">
                       {Math.round(completion.confidenceLevel * 100)}%
                     </span>
@@ -177,7 +177,7 @@ export function AddressAssistantForm() {
                   onClick={applySuggestion}
                 >
                   <CheckCircle className="mr-2 h-4 w-4" />
-                  Apply
+                  Aplicar
                 </Button>
               </div>
             </CardContent>
@@ -190,9 +190,9 @@ export function AddressAssistantForm() {
             name="orderId"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Order ID (Optional)</FormLabel>
+                <FormLabel>ID de Pedido (Opcional)</FormLabel>
                 <FormControl>
-                  <Input placeholder="e.g., #12345" {...field} />
+                  <Input placeholder="ej., #12345" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -203,17 +203,17 @@ export function AddressAssistantForm() {
             name="notes"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Notes (Optional)</FormLabel>
+                <FormLabel>Notas (Opcional)</FormLabel>
                 <FormControl>
-                  <Input placeholder="e.g., leave at front door" {...field} />
+                  <Input placeholder="ej., dejar en la puerta principal" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
         </div>
-        <Button type="submit" size="lg">
-          Create Order
+        <Button type="submit" size="lg" className="btn-gradient">
+          Crear Pedido
         </Button>
       </form>
     </Form>

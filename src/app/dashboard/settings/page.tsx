@@ -13,17 +13,17 @@ import { Label } from "@/components/ui/label"
 export default function SettingsPage() {
   return (
     <div className="grid gap-6">
-      <Card>
+      <Card className="glass-card">
         <CardHeader>
-          <CardTitle className="font-headline">Business Details</CardTitle>
+          <CardTitle className="font-headline">Detalles del Negocio</CardTitle>
           <CardDescription>
-            Update your business information for accurate pickups.
+            Actualiza la información de tu negocio para recogidas precisas.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form className="grid gap-6">
             <div className="grid gap-3">
-              <Label htmlFor="name">Pickup Name</Label>
+              <Label htmlFor="name">Nombre de Recogida</Label>
               <Input
                 id="name"
                 type="text"
@@ -32,7 +32,7 @@ export default function SettingsPage() {
               />
             </div>
             <div className="grid gap-3">
-              <Label htmlFor="phone">Pickup Phone</Label>
+              <Label htmlFor="phone">Teléfono de Recogida</Label>
               <Input
                 id="phone"
                 type="tel"
@@ -41,7 +41,7 @@ export default function SettingsPage() {
               />
             </div>
             <div className="grid gap-3">
-              <Label htmlFor="address">Pickup Address</Label>
+              <Label htmlFor="address">Dirección de Recogida</Label>
               <Input
                 id="address"
                 type="text"
@@ -52,7 +52,7 @@ export default function SettingsPage() {
           </form>
         </CardContent>
         <CardFooter className="border-t px-6 py-4">
-          <Button>Save Changes</Button>
+          <Button className="btn-gradient">Guardar Cambios</Button>
         </CardFooter>
       </Card>
     </div>

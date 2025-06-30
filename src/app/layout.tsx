@@ -1,10 +1,24 @@
 import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
+import { cn } from '@/lib/utils';
+import { Poppins, Montserrat } from 'next/font/google'
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-poppins',
+});
+
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+  variable: '--font-montserrat',
+});
 
 export const metadata: Metadata = {
   title: 'BeFast Partner AI',
-  description: 'AI-powered partner hub for delivery management.',
+  description: 'Panel de socios impulsado por IA para la gestión de entregas.',
 };
 
 export default function RootLayout({
@@ -13,14 +27,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
-      </head>
-      <body className="font-body antialiased">
-        <div className="absolute inset-0 bg-background/95 -z-10"/>
+    <html lang="es" className="dark" suppressHydrationWarning>
+      <body className={cn("font-body antialiased", poppins.variable, montserrat.variable)}>
         {children}
         <Toaster />
       </body>

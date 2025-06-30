@@ -24,16 +24,16 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center bg-transparent p-4">
-      <Card className="w-full max-w-sm shadow-2xl">
-        <CardHeader className="bg-primary text-center text-primary-foreground">
-          <div className="mx-auto my-4 h-16 w-16 rounded-full bg-primary-foreground/20 p-2">
-            <Logo className="h-full w-full" />
+    <div className="flex min-h-screen w-full items-center justify-center p-4">
+      <Card className="w-full max-w-sm shadow-2xl glass-card">
+        <CardHeader className="text-center">
+          <div className="mx-auto my-4">
+            <Logo className="h-20 w-auto" />
           </div>
-          <CardTitle className="font-headline text-3xl">
+          <CardTitle className="font-headline text-3xl bg-gradient-to-r from-primary to-fuchsia-500 bg-clip-text text-transparent">
             BeFast Market
           </CardTitle>
-          <CardDescription className="text-primary-foreground/80">
+          <CardDescription className="text-muted-foreground">
             Accede a tu panel de pedidos
           </CardDescription>
         </CardHeader>
@@ -55,12 +55,12 @@ export default function LoginPage() {
             </div>
           </CardContent>
           <CardFooter className="flex flex-col gap-4 p-6 pt-0">
-            <Button type="submit" className="w-full" size="lg">
+            <Button type="submit" className="w-full btn-gradient" size="lg">
               Iniciar Sesión
             </Button>
             <div className="text-center text-sm">
               ¿No tienes una cuenta?{" "}
-              <Link href="#" className="underline">
+              <Link href="#" className="underline hover:text-primary">
                 Regístrate aquí
               </Link>
             </div>
