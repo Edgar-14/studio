@@ -31,6 +31,7 @@ export default function RootLayout({
     <html lang="es" suppressHydrationWarning>
        <head>
         <link rel="icon" href="/android-chrome-192x192.png" type="image/png" sizes="192x192" />
+        <link rel="manifest" href="/manifest.json" />
       </head>
       <body className={cn("font-body antialiased", poppins.variable, montserrat.variable)}>
         {children}

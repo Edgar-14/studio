@@ -45,6 +45,20 @@ const orders = [
     status: "Entregado",
     total: "$250.00",
   },
+   {
+    orderId: "ORD005",
+    customer: "Lucas Garcia",
+    date: "hace 2 días",
+    status: "Entregado",
+    total: "$80.00",
+  },
+  {
+    orderId: "ORD006",
+    customer: "Sofia Martinez",
+    date: "hace 2 días",
+    status: "Cancelado",
+    total: "$200.00",
+  },
 ]
 
 const statusVariant: { [key: string]: "default" | "secondary" | "outline" | "destructive" } = {
@@ -56,7 +70,7 @@ const statusVariant: { [key: string]: "default" | "secondary" | "outline" | "des
 
 export default function DashboardPage() {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-8">
       <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
         <Card className="glass-card">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -99,41 +113,39 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
       </div>
-      <div className="grid gap-4 md:gap-8 lg:grid-cols-1">
-        <Card className="glass-card">
-          <CardHeader>
-            <CardTitle>Pedidos Recientes</CardTitle>
-            <CardDescription>
-              Los últimos pedidos procesados.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                    <TableHead>Cliente</TableHead>
-                    <TableHead>Estado</TableHead>
-                    <TableHead className="text-right">Total</TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {orders.map((order) => (
-                    <TableRow key={order.orderId}>
-                        <TableCell>
-                        <div className="font-medium">{order.customer}</div>
-                        <div className="text-sm text-muted-foreground">{order.date}</div>
-                        </TableCell>
-                        <TableCell>
-                            <Badge variant={statusVariant[order.status] || 'default'}>{order.status}</Badge>
-                        </TableCell>
-                        <TableCell className="text-right">{order.total}</TableCell>
-                    </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-      </div>
+      <Card className="glass-card">
+        <CardHeader>
+          <CardTitle className="font-headline">Pedidos Recientes</CardTitle>
+          <CardDescription>
+            Los últimos pedidos procesados en tiempo real.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+              <TableHeader>
+                  <TableRow>
+                  <TableHead>Cliente</TableHead>
+                  <TableHead>Estado</TableHead>
+                  <TableHead className="text-right">Total</TableHead>
+                  </TableRow>
+              </TableHeader>
+              <TableBody>
+                  {orders.map((order) => (
+                  <TableRow key={order.orderId}>
+                      <TableCell>
+                      <div className="font-medium">{order.customer}</div>
+                      <div className="text-sm text-muted-foreground">{order.date}</div>
+                      </TableCell>
+                      <TableCell>
+                          <Badge variant={statusVariant[order.status] || 'default'}>{order.status}</Badge>
+                      </TableCell>
+                      <TableCell className="text-right">{order.total}</TableCell>
+                  </TableRow>
+                  ))}
+              </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
     </div>
   )
 }

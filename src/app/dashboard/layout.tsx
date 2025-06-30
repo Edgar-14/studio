@@ -21,7 +21,7 @@ export default function DashboardLayout({
     <div className="flex min-h-screen w-full flex-col bg-transparent">
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-10 hidden flex-col border-r bg-secondary/60 backdrop-blur-xl transition-all duration-300 sm:flex",
+          "fixed inset-y-0 left-0 z-10 hidden flex-col border-r bg-background/80 backdrop-blur-xl transition-all duration-300 sm:flex",
           isCollapsed ? "w-16" : "w-60"
         )}
       >
@@ -60,7 +60,7 @@ export default function DashboardLayout({
                   <span className="sr-only">Alternar Menú</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="sm:max-w-xs bg-secondary/60 backdrop-blur-xl">
+              <SheetContent side="left" className="sm:max-w-xs bg-background/80 backdrop-blur-xl">
                  <div className="flex h-16 items-center border-b px-4">
                     <Link href="/" className="flex items-center gap-2 font-semibold">
                         <Logo className="h-8 w-auto" />

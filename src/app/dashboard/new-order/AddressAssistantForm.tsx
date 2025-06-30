@@ -101,7 +101,7 @@ export function AddressAssistantForm() {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormField
@@ -219,7 +219,7 @@ export function AddressAssistantForm() {
           </Button>
         </form>
       </Form>
-      <div className="w-full h-80 lg:h-[500px] rounded-lg overflow-hidden glass-card p-2">
+      <div className="w-full h-80 lg:h-full min-h-[300px] rounded-lg overflow-hidden glass-card p-2">
          <MapComponent center={mapCenter} />
       </div>
     </div>
