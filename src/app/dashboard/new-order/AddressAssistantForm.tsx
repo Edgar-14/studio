@@ -101,37 +101,35 @@ export function AddressAssistantForm() {
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <div className="grid grid-cols-1 gap-8">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="grid gap-6 md:grid-cols-2">
-            <FormField
-              control={form.control}
-              name="customerName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nombre del Cliente</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Jane Doe" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="customerPhone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Teléfono del Cliente</FormLabel>
-                  <FormControl>
-                    <Input placeholder="(555) 123-4567" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+          <FormField
+            control={form.control}
+            name="customerName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Nombre del Cliente</FormLabel>
+                <FormControl>
+                  <Input placeholder="Jane Doe" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="customerPhone"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Teléfono del Cliente</FormLabel>
+                <FormControl>
+                  <Input placeholder="(555) 123-4567" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
           <FormField
             control={form.control}
@@ -190,40 +188,38 @@ export function AddressAssistantForm() {
             </Card>
           )}
 
-          <div className="grid gap-6 md:grid-cols-2">
-            <FormField
-              control={form.control}
-              name="orderId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>ID de Pedido (Opcional)</FormLabel>
-                  <FormControl>
-                    <Input placeholder="ej., #12345" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="notes"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Notas (Opcional)</FormLabel>
-                  <FormControl>
-                    <Input placeholder="ej., dejar en la puerta principal" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+          <FormField
+            control={form.control}
+            name="orderId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>ID de Pedido (Opcional)</FormLabel>
+                <FormControl>
+                  <Input placeholder="ej., #12345" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="notes"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Notas (Opcional)</FormLabel>
+                <FormControl>
+                  <Input placeholder="ej., dejar en la puerta principal" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <Button type="submit" size="lg" className="btn-gradient w-full sm:w-auto">
             Crear Pedido
           </Button>
         </form>
       </Form>
-      <div className="w-full h-80 lg:h-full rounded-lg overflow-hidden glass-card p-2">
+      <div className="w-full h-80 lg:h-[500px] rounded-lg overflow-hidden glass-card p-2">
          <MapComponent center={mapCenter} />
       </div>
     </div>

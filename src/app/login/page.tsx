@@ -34,7 +34,7 @@ export default function LoginPage() {
             BeFast Delivery
           </CardTitle>
           <CardDescription className="text-muted-foreground">
-            Accede a tu panel de socio
+            Accede a tu panel de pedidos.
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleLogin}>

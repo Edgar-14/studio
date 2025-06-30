@@ -19,6 +19,7 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   title: 'BeFast Partner AI',
   description: 'Panel de socios impulsado por IA para la gestión de entregas.',
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({
@@ -28,6 +29,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" suppressHydrationWarning>
+       <head>
+        <link rel="icon" href="/android-chrome-192x192.png" type="image/png" sizes="192x192" />
+      </head>
       <body className={cn("font-body antialiased", poppins.variable, montserrat.variable)}>
         {children}
         <Toaster />

@@ -15,8 +15,6 @@ import {
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { DollarSign, Package, CreditCard, Activity } from "lucide-react"
-import { OverviewChart } from "./OverviewChart"
-
 
 const orders = [
   {
@@ -101,18 +99,7 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
       </div>
-      <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
-        <Card className="xl:col-span-2 glass-card">
-          <CardHeader>
-            <CardTitle>Resumen de Actividad</CardTitle>
-            <CardDescription>
-              Resumen de los pedidos de los últimos 7 días.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="pl-2">
-             <OverviewChart />
-          </CardContent>
-        </Card>
+      <div className="grid gap-4 md:gap-8 lg:grid-cols-1">
         <Card className="glass-card">
           <CardHeader>
             <CardTitle>Pedidos Recientes</CardTitle>
