@@ -18,10 +18,10 @@ export default function DashboardLayout({
   const [isCollapsed, setIsCollapsed] = useState(false)
 
   return (
-    <div className="flex min-h-screen w-full flex-col">
+    <div className="flex min-h-screen w-full flex-col bg-secondary">
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-10 hidden flex-col border-r bg-background/80 backdrop-blur-sm transition-all duration-300 sm:flex",
+          "fixed inset-y-0 left-0 z-10 hidden flex-col border-r bg-background/95 backdrop-blur-sm transition-all duration-300 sm:flex",
           isCollapsed ? "w-16" : "w-60"
         )}
       >

@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils"
 import {
   CreditCard,
   HeartPulse,
+  LayoutDashboard,
   ListOrdered,
   PlusCircle,
   Settings,
@@ -20,6 +21,7 @@ import {
 } from "@/components/ui/tooltip"
 
 const links = [
+  { href: "/dashboard", label: "Resumen", icon: LayoutDashboard, exact: true },
   { href: "/dashboard/new-order", label: "Nuevo Pedido", icon: PlusCircle },
   { href: "/dashboard/orders", label: "Pedidos", icon: ListOrdered },
   { href: "/dashboard/billing", label: "Facturación", icon: CreditCard },
@@ -43,7 +45,7 @@ export function DashboardNav({ isCollapsed }: { isCollapsed: boolean }) {
         )}
       >
         {links.map((link) => {
-          const isActive = pathname.startsWith(link.href)
+          const isActive = link.exact ? pathname === link.href : pathname.startsWith(link.href)
           const Icon = link.icon
           return (
             <Tooltip key={link.href}>
@@ -52,7 +54,7 @@ export function DashboardNav({ isCollapsed }: { isCollapsed: boolean }) {
                   href={link.href}
                   className={cn(
                     "group flex items-center gap-4 rounded-lg px-3 py-2 text-muted-foreground transition-colors hover:text-foreground hover:bg-muted",
-                    isActive && "bg-primary/20 text-foreground",
+                    isActive && "bg-primary/10 text-primary font-semibold",
                     isCollapsed ? "justify-center" : ""
                   )}
                 >
@@ -61,7 +63,7 @@ export function DashboardNav({ isCollapsed }: { isCollapsed: boolean }) {
                     {link.label}
                   </span>
                   {link.label === "Pedidos" && !isCollapsed && (
-                    <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
+                    <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/80 text-primary-foreground">
                       3
                     </Badge>
                   )}

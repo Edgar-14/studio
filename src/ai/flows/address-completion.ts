@@ -19,6 +19,8 @@ export type AddressCompletionInput = z.infer<typeof AddressCompletionInputSchema
 const AddressCompletionOutputSchema = z.object({
   validatedAddress: z.string().describe('La dirección validada y autocompletada.'),
   confidenceLevel: z.number().describe('Un nivel de confianza (0-1) que indica la precisión de la finalización.'),
+  latitude: z.number().optional().describe('La latitud de la dirección validada.'),
+  longitude: z.number().optional().describe('La longitud de la dirección validada.'),
 });
 export type AddressCompletionOutput = z.infer<typeof AddressCompletionOutputSchema>;
 
@@ -57,7 +59,9 @@ const addressCompletionPrompt = ai.definePrompt({
 
   El usuario proporcionará una dirección y debes usar la herramienta getAddressDetails para recuperar información detallada sobre la dirección.
 
-  Basado en la información recuperada, valida y autocompleta la dirección, proporcionando un nivel de confianza (0-1) que indique la precisión de la finalización.
+  Basado en la información recuperada, valida y autocompleta la dirección. Proporciona un nivel de confianza (0-1) que indique la precisión de la finalización.
+
+  Incluye la latitud y longitud obtenidas de la herramienta getAddressDetails en la respuesta final.
 
   Dirección proporcionada por el usuario: {{{address}}}
 

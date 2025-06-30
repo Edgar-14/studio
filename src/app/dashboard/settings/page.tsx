@@ -1,14 +1,20 @@
-import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+
+const BusinessDetail = ({ label, value }: { label: string; value: string }) => (
+  <div className="grid gap-2">
+    <Label className="text-muted-foreground">{label}</Label>
+    <p className="text-lg font-medium text-foreground">
+      {value}
+    </p>
+  </div>
+);
 
 export default function SettingsPage() {
   return (
@@ -17,43 +23,16 @@ export default function SettingsPage() {
         <CardHeader>
           <CardTitle className="font-headline">Detalles del Negocio</CardTitle>
           <CardDescription>
-            Actualiza la información de tu negocio para recogidas precisas.
+            Esta es la información de tu negocio utilizada para las recogidas.
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="grid gap-6">
-            <div className="grid gap-3">
-              <Label htmlFor="name">Nombre de Recogida</Label>
-              <Input
-                id="name"
-                type="text"
-                className="w-full"
-                defaultValue="BeFast HQ"
-              />
-            </div>
-            <div className="grid gap-3">
-              <Label htmlFor="phone">Teléfono de Recogida</Label>
-              <Input
-                id="phone"
-                type="tel"
-                className="w-full"
-                defaultValue="(555) 987-6543"
-              />
-            </div>
-            <div className="grid gap-3">
-              <Label htmlFor="address">Dirección de Recogida</Label>
-              <Input
-                id="address"
-                type="text"
-                className="w-full"
-                defaultValue="123 Innovation Drive, Tech City, 12345"
-              />
-            </div>
-          </form>
+          <div className="grid gap-8">
+            <BusinessDetail label="Nombre de Recogida" value="BeFast HQ" />
+            <BusinessDetail label="Teléfono de Recogida" value="(555) 987-6543" />
+            <BusinessDetail label="Dirección de Recogida" value="123 Innovation Drive, Tech City, 12345" />
+          </div>
         </CardContent>
-        <CardFooter className="border-t px-6 py-4">
-          <Button className="btn-gradient">Guardar Cambios</Button>
-        </CardFooter>
       </Card>
     </div>
   )
