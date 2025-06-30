@@ -8,7 +8,40 @@ import { UserNav } from "@/components/UserNav"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { cn } from "@/lib/utils"
-import { PanelLeft } from "lucide-react"
+import { PanelLeft, Globe, Facebook, Instagram, Store, Phone, Mail } from "lucide-react"
+
+const Footer = () => (
+    <footer className="w-full mt-auto py-8 px-6 text-center text-muted-foreground text-xs md:text-sm">
+      <div className="flex justify-center items-center gap-4 md:gap-6 mb-4">
+        <a href="https://befastmarket.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-300" aria-label="BeFast Market Website">
+          <Globe className="w-5 h-5 md:w-6 md:h-6" />
+        </a>
+        <a href="https://www.facebook.com/befastmarket1/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-300" aria-label="Facebook">
+          <Facebook className="w-5 h-5 md:w-6 md:h-6" />
+        </a>
+        <a href="https://www.instagram.com/befastmarket/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-300" aria-label="Instagram">
+          <Instagram className="w-5 h-5 md:w-6 md:h-6" />
+        </a>
+        <a href="https://play.google.com/store/apps/details?id=mercado.befast" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-300" aria-label="Google Play Store">
+          <Store className="w-5 h-5 md:w-6 md:h-6" />
+        </a>
+      </div>
+      <div className="space-y-1">
+        <p>BeFast Market es una empresa hermana.</p>
+        <div className="flex items-center justify-center gap-4 flex-wrap">
+          <a href="mailto:soporte@befastapp.com.mx" className="flex items-center gap-1 hover:text-primary transition-colors duration-300">
+            <Mail className="w-4 h-4"/>
+            soporte@befastapp.com.mx
+          </a>
+          <a href="tel:3121905494" className="flex items-center gap-1 hover:text-primary transition-colors duration-300">
+            <Phone className="w-4 h-4"/>
+            312 190 5494
+          </a>
+        </div>
+      </div>
+    </footer>
+);
+
 
 export default function DashboardLayout({
   children,
@@ -18,8 +51,8 @@ export default function DashboardLayout({
   const [isCollapsed, setIsCollapsed] = useState(false)
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-transparent">
-      <aside
+    <div className="flex min-h-screen w-full flex-col bg-background/95">
+       <aside
         className={cn(
           "fixed inset-y-0 left-0 z-10 hidden flex-col border-r bg-background/80 backdrop-blur-xl transition-all duration-300 sm:flex",
           isCollapsed ? "w-16" : "w-60"
@@ -32,11 +65,11 @@ export default function DashboardLayout({
           )}
         >
           <Link
-            href="/"
+            href="/dashboard"
             className="flex items-center gap-2 font-semibold"
           >
             <Logo className="h-8 w-auto" />
-            <span className={cn("font-semibold text-lg", isCollapsed && "hidden")}>
+             <span className={cn("font-bold text-lg", isCollapsed && "hidden")}>
               BeFast
             </span>
           </Link>
@@ -47,7 +80,7 @@ export default function DashboardLayout({
       </aside>
       <div
         className={cn(
-          "flex flex-col sm:gap-4 sm:py-4 transition-all duration-300",
+          "flex flex-col flex-1 sm:gap-4 sm:py-4 transition-all duration-300",
           isCollapsed ? "sm:pl-16" : "sm:pl-60"
         )}
       >
@@ -60,14 +93,14 @@ export default function DashboardLayout({
                   <span className="sr-only">Alternar Menú</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="sm:max-w-xs bg-background/80 backdrop-blur-xl">
+              <SheetContent side="left" className="sm:max-w-xs bg-background/80 backdrop-blur-xl p-0">
                  <div className="flex h-16 items-center border-b px-4">
-                    <Link href="/" className="flex items-center gap-2 font-semibold">
+                    <Link href="/dashboard" className="flex items-center gap-2 font-semibold">
                         <Logo className="h-8 w-auto" />
-                        <span className="font-semibold text-lg">BeFast</span>
+                        <span className="font-bold text-lg">BeFast</span>
                     </Link>
                 </div>
-                <div className="flex-1 overflow-auto py-4">
+                <div className="overflow-auto py-4">
                   <DashboardNav isCollapsed={false} />
                 </div>
               </SheetContent>
@@ -87,6 +120,7 @@ export default function DashboardLayout({
         <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
           {children}
         </main>
+        <Footer />
       </div>
     </div>
   )

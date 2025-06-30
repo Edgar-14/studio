@@ -20,7 +20,7 @@ import {
   addressCompletion,
   type AddressCompletionOutput,
 } from "@/ai/flows/address-completion"
-import { Loader2, CheckCircle, Wand2, User, Phone, MapPin, StickyNote, Building } from "lucide-react"
+import { Loader2, CheckCircle, Wand2, User, Phone, MapPin, StickyNote, Building, DollarSign } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { useToast } from "@/hooks/use-toast"
 import { MapComponent } from "./Map"
@@ -29,6 +29,7 @@ const formSchema = z.object({
   customerName: z.string().min(2, "El nombre debe tener al menos 2 caracteres."),
   customerPhone: z.string().min(10, "El número de teléfono parece demasiado corto."),
   customerAddress: z.string().min(10, "La dirección parece demasiado corta."),
+  amountToCollect: z.string().optional(),
   notes: z.string().optional(),
 })
 
@@ -50,7 +51,7 @@ export function AddressAssistantForm() {
   const [addressInput, setAddressInput] = useState("")
   const [completion, setCompletion] = useState<AddressCompletionOutput | null>(null)
   const [isPending, startTransition] = useTransition()
-  const [mapCenter, setMapCenter] = useState<LatLng>({ lat: 19.4326, lng: -99.1332 }) // Default to Mexico City
+  const [mapCenter, setMapCenter] = useState<LatLng>({ lat: 19.2433, lng: -103.7250 }) // Default to Colima, Mexico
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -58,6 +59,7 @@ export function AddressAssistantForm() {
       customerName: "",
       customerPhone: "",
       customerAddress: "",
+      amountToCollect: "",
       notes: "",
     },
   })
@@ -111,7 +113,7 @@ export function AddressAssistantForm() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
       <div className="space-y-8">
-        <Card className="glass-card !border-primary/20">
+        <Card className="glass-card">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-xl font-semibold">
                 <Building className="text-primary" />
@@ -175,10 +177,8 @@ export function AddressAssistantForm() {
                         <FormItem>
                             <FormLabel className="flex items-center gap-2 text-muted-foreground"><MapPin className="w-4 h-4"/>Dirección del Cliente</FormLabel>
                             <FormControl>
-                            <Textarea
+                            <Input
                                 placeholder="Empieza a escribir una dirección para ver sugerencias..."
-                                className="resize-none"
-                                rows={4}
                                 {...field}
                             />
                             </FormControl>
@@ -186,7 +186,7 @@ export function AddressAssistantForm() {
                         </FormItem>
                         )}
                     />
-
+                    
                     {isPending && (
                         <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Loader2 className="h-4 w-4 animate-spin text-primary" />
@@ -225,6 +225,20 @@ export function AddressAssistantForm() {
                         </CardContent>
                         </Card>
                     )}
+
+                    <FormField
+                      control={form.control}
+                      name="amountToCollect"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="flex items-center gap-2 text-muted-foreground"><DollarSign className="w-4 h-4"/>Monto a Cobrar</FormLabel>
+                          <FormControl>
+                            <Input type="number" placeholder="0.00" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                     
                     <FormField
                         control={form.control}
@@ -233,12 +247,13 @@ export function AddressAssistantForm() {
                         <FormItem>
                             <FormLabel className="flex items-center gap-2 text-muted-foreground"><StickyNote className="w-4 h-4"/>Notas (Opcional)</FormLabel>
                             <FormControl>
-                            <Input placeholder="ej., dejar en la puerta principal" {...field} />
+                            <Textarea placeholder="Ej. Puerta azul, casa de dos pisos, dejar en recepción..." className="resize-none" rows={3} {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
                         )}
                     />
+
                     <Button type="submit" size="lg" className="btn-gradient w-full sm:w-auto">
                         Crear Pedido
                     </Button>
