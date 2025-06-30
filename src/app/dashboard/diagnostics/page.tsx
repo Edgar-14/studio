@@ -38,7 +38,7 @@ export default function DiagnosticsPage() {
   return (
     <div>
         <div className="mb-8">
-            <h1 className="text-2xl font-bold font-headline">Diagnóstico de Integraciones</h1>
+            <h1 className="text-2xl font-bold">Diagnóstico de Integraciones</h1>
             <p className="text-muted-foreground">
                 Verifica el estado de las integraciones de tus servicios.
             </p>

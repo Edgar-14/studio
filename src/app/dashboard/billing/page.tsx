@@ -51,7 +51,7 @@ export default function BillingPage() {
       <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
         <Card className="sm:col-span-2 transition-all hover:shadow-lg hover:-translate-y-1 glass-card">
           <CardHeader className="pb-3">
-            <CardTitle className="font-headline">Tus Créditos</CardTitle>
+            <CardTitle>Tus Créditos</CardTitle>
             <CardDescription className="max-w-lg text-balance leading-relaxed">
               Administra tus créditos para crear nuevos pedidos.
             </CardDescription>
@@ -84,7 +84,7 @@ export default function BillingPage() {
       </div>
       <Card className="transition-all hover:shadow-lg glass-card">
         <CardHeader>
-          <CardTitle className="font-headline">Historial de Facturación</CardTitle>
+          <CardTitle>Historial de Facturación</CardTitle>
           <CardDescription>
             Consulta tus transacciones y facturas pasadas.
           </CardDescription>

@@ -27,10 +27,10 @@ export default function LoginPage() {
     <div className="flex min-h-screen w-full items-center justify-center p-4 bg-secondary">
       <Card className="w-full max-w-sm shadow-2xl glass-card">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-4">
+          <div className="mx-auto mb-4 flex justify-center">
             <Logo className="h-20 w-auto" />
           </div>
-          <CardTitle className="font-headline text-3xl bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
+          <CardTitle className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
             BeFast Delivery
           </CardTitle>
           <CardDescription className="text-muted-foreground">

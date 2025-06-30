@@ -64,7 +64,7 @@ export default function OrdersPage() {
   return (
     <Card className="glass-card">
       <CardHeader>
-        <CardTitle className="font-headline">Estado de Pedidos</CardTitle>
+        <CardTitle>Estado de Pedidos</CardTitle>
         <CardDescription>
           Sigue el estado en tiempo real de tus entregas.
         </CardDescription>

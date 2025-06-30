@@ -21,7 +21,7 @@ import {
   type AddressCompletionOutput,
 } from "@/ai/flows/address-completion"
 import { Loader2, CheckCircle, Wand2, User, Phone, MapPin, StickyNote, Building } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { useToast } from "@/hooks/use-toast"
 import { MapComponent } from "./Map"
 
@@ -50,7 +50,7 @@ export function AddressAssistantForm() {
   const [addressInput, setAddressInput] = useState("")
   const [completion, setCompletion] = useState<AddressCompletionOutput | null>(null)
   const [isPending, startTransition] = useTransition()
-  const [mapCenter, setMapCenter] = useState<LatLng>({ lat: 19.2433, lng: -103.7250 }) // Default to Colima, Mexico
+  const [mapCenter, setMapCenter] = useState<LatLng>({ lat: 19.4326, lng: -99.1332 }) // Default to Mexico City
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -109,14 +109,17 @@ export function AddressAssistantForm() {
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
       <div className="space-y-8">
         <Card className="glass-card !border-primary/20">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 font-headline text-lg">
+            <CardTitle className="flex items-center gap-2 text-xl font-semibold">
                 <Building className="text-primary" />
                 Punto de Recogida
             </CardTitle>
+             <CardDescription>
+              Estos son los datos de tu negocio para la recogida.
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
               <BusinessDetail icon={<User className="w-5 h-5"/>} label="Nombre de Recogida" value="BeFast HQ" />
@@ -127,10 +130,13 @@ export function AddressAssistantForm() {
         
         <Card className="glass-card">
             <CardHeader>
-                <CardTitle className="flex items-center gap-2 font-headline text-lg">
+                <CardTitle className="flex items-center gap-2 text-xl font-semibold">
                     <MapPin className="text-primary"/>
                     Punto de Entrega
                 </CardTitle>
+                <CardDescription>
+                    Completa los datos para la entrega del pedido.
+                </CardDescription>
             </CardHeader>
             <CardContent>
                 <Form {...form}>

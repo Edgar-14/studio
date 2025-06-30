@@ -36,7 +36,7 @@ export default function DashboardLayout({
             className="flex items-center gap-2 font-semibold"
           >
             <Logo className="h-8 w-auto" />
-            <span className={cn("font-headline text-lg", isCollapsed && "hidden")}>
+            <span className={cn("font-semibold text-lg", isCollapsed && "hidden")}>
               BeFast
             </span>
           </Link>
@@ -64,7 +64,7 @@ export default function DashboardLayout({
                  <div className="flex h-16 items-center border-b px-4">
                     <Link href="/" className="flex items-center gap-2 font-semibold">
                         <Logo className="h-8 w-auto" />
-                        <span className="font-headline text-lg">BeFast</span>
+                        <span className="font-semibold text-lg">BeFast</span>
                     </Link>
                 </div>
                 <div className="flex-1 overflow-auto py-4">
