@@ -21,8 +21,7 @@ import {
 } from "@/components/ui/tooltip"
 
 const links = [
-  { href: "/dashboard", label: "Resumen", icon: LayoutDashboard, exact: true },
-  { href: "/dashboard/new-order", label: "Nuevo Pedido", icon: PlusCircle },
+  { href: "/dashboard/new-order", label: "Nuevo Pedido", icon: PlusCircle, exact: true },
   { href: "/dashboard/orders", label: "Pedidos", icon: ListOrdered },
   { href: "/dashboard/billing", label: "Facturación", icon: CreditCard },
   { href: "/dashboard/settings", label: "Ajustes", icon: Settings },

@@ -5,14 +5,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
+import { Building, Phone, MapPin } from "lucide-react"
 
-const BusinessDetail = ({ label, value }: { label: string; value: string }) => (
-  <div className="grid gap-2">
-    <Label className="text-muted-foreground">{label}</Label>
-    <p className="text-lg font-medium text-foreground">
-      {value}
-    </p>
+const BusinessDetail = ({ icon, label, value }: { icon: React.ReactNode, label: string; value: string }) => (
+  <div className="flex items-start gap-4">
+    <div className="text-primary pt-1">{icon}</div>
+    <div className="grid gap-1">
+      <p className="text-sm font-medium text-muted-foreground">{label}</p>
+      <p className="text-lg text-foreground">
+        {value}
+      </p>
+    </div>
   </div>
 );
 
@@ -23,14 +26,14 @@ export default function SettingsPage() {
         <CardHeader>
           <CardTitle className="font-headline">Detalles del Negocio</CardTitle>
           <CardDescription>
-            Esta es la información de tu negocio utilizada para las recogidas.
+            Esta es la información de tu negocio utilizada para las recogidas y la facturación. Estos datos se configuran durante el registro.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid gap-8">
-            <BusinessDetail label="Nombre de Recogida" value="BeFast HQ" />
-            <BusinessDetail label="Teléfono de Recogida" value="(555) 987-6543" />
-            <BusinessDetail label="Dirección de Recogida" value="123 Innovation Drive, Tech City, 12345" />
+            <BusinessDetail icon={<Building className="h-5 w-5" />} label="Nombre del Negocio" value="BeFast HQ" />
+            <BusinessDetail icon={<Phone className="h-5 w-5" />} label="Teléfono de Contacto" value="(555) 987-6543" />
+            <BusinessDetail icon={<MapPin className="h-5 w-5" />} label="Dirección de Recogida" value="123 Innovation Drive, Tech City, 12345" />
           </div>
         </CardContent>
       </Card>
