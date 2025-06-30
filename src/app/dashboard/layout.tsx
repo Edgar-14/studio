@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { cn } from "@/lib/utils"
 import { PanelLeft, Globe, Facebook, Instagram, Store, Phone, Mail } from "lucide-react"
+import { ThemeToggle } from "@/components/ThemeToggle"
 
 const Footer = () => (
     <footer className="w-full mt-auto py-8 px-6 text-center text-muted-foreground text-xs md:text-sm">
@@ -115,7 +116,10 @@ export default function DashboardLayout({
               <span className="sr-only">Alternar Barra Lateral</span>
             </Button>
           </div>
-          <UserNav />
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <UserNav />
+          </div>
         </header>
         <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
           {children}
