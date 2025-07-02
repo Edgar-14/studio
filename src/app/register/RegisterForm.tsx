@@ -6,6 +6,9 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import { auth, db } from "@/lib/firebase" // Import Firebase auth and db
+import { createUserWithEmailAndPassword } from "firebase/auth"
+import { doc, setDoc } from "firebase/firestore"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -32,7 +35,7 @@ import {
 } from "@/ai/flows/address-completion"
 import { useToast } from "@/hooks/use-toast"
 import { MapComponent } from "@/app/dashboard/new-order/Map"
-import { Loader2, CheckCircle, Wand2, User, Mail, Lock, Building, Phone, MapPin } from "lucide-react"
+import { Loader2, CheckCircle, Wand2, User, Mail, Lock, Building, Phone, MapPin, AlertTriangle } from "lucide-react"
 
 const formSchema = z.object({
   fullName: z.string().min(2, "El nombre completo es requerido."),
@@ -56,7 +59,8 @@ export function RegisterForm() {
   const { toast } = useToast()
   const [addressInput, setAddressInput] = useState("")
   const [completion, setCompletion] = useState<AddressCompletionOutput | null>(null)
-  const [isPending, startTransition] = useTransition()
+  const [isFormSubmitting, setIsFormSubmitting] = useState(false) // For general form submission
+  const [aiPending, startAITransition] = useTransition() // Specifically for AI address completion
   const [mapCenter, setMapCenter] = useState<LatLng>({ lat: 19.2433, lng: -103.7250 }) // Default to Colima, Mexico
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -84,7 +88,7 @@ export function RegisterForm() {
 
   useEffect(() => {
     if (addressInput && addressInput.length > 10) {
-      startTransition(async () => {
+      startAITransition(async () => {
         const result = await addressCompletion({ address: addressInput })
         if (result?.validatedAddress) {
           setCompletion(result)
@@ -100,14 +104,56 @@ export function RegisterForm() {
     }
   }, [addressInput])
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values, { coordinates: mapCenter })
-    toast({
-      title: "¡Registro Exitoso!",
-      description: "Tu cuenta ha sido creada. Ahora puedes iniciar sesión.",
-      className: "bg-green-100 border-green-300 text-green-800",
-    })
-    router.push("/login")
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsFormSubmitting(true)
+    try {
+      // 1. Create user with email and password
+      const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password)
+      const user = userCredential.user
+
+      // 2. Store business data in Firestore
+      if (user) {
+        const businessData = {
+          uid: user.uid,
+          ownerFullName: values.fullName,
+          email: values.email,
+          businessName: values.businessName,
+          businessPhone: values.businessPhone,
+          businessAddress: values.businessAddress, // Consider storing the validated address if preferred
+          addressCoordinates: mapCenter, // Storing lat/lng
+          createdAt: new Date().toISOString(),
+        }
+        await setDoc(doc(db, "businesses", user.uid), businessData)
+      }
+
+      toast({
+        title: "¡Registro Exitoso!",
+        description: "Tu cuenta ha sido creada y los datos de tu negocio guardados. Ahora puedes iniciar sesión.",
+        className: "bg-green-100 border-green-300 text-green-800",
+      })
+      router.push("/login")
+    } catch (error: any) {
+      console.error("Error durante el registro:", error)
+      let errorMessage = "Ocurrió un error durante el registro. Por favor, inténtalo de nuevo."
+      if (error.code === "auth/email-already-in-use") {
+        errorMessage = "Este correo electrónico ya está en uso. Por favor, utiliza otro."
+      } else if (error.code === "auth/weak-password") {
+        errorMessage = "La contraseña es demasiado débil. Debe tener al menos 6 caracteres."
+      }
+      toast({
+        title: "Error de Registro",
+        description: errorMessage,
+        variant: "destructive",
+        action: (
+          <div className="flex items-center">
+            <AlertTriangle className="mr-2 h-4 w-4" />
+            <span>Reintentar</span>
+          </div>
+        ),
+      })
+    } finally {
+      setIsFormSubmitting(false)
+    }
   }
 
   function applySuggestion() {
@@ -133,7 +179,7 @@ export function RegisterForm() {
                   <FormItem>
                     <FormLabel className="flex items-center gap-2 text-muted-foreground"><User className="w-4 h-4" />Nombre Completo</FormLabel>
                     <FormControl>
-                      <Input placeholder="John Doe" {...field} />
+                      <Input placeholder="John Doe" {...field} disabled={isFormSubmitting} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -146,7 +192,7 @@ export function RegisterForm() {
                   <FormItem>
                     <FormLabel className="flex items-center gap-2 text-muted-foreground"><Mail className="w-4 h-4" />Email</FormLabel>
                     <FormControl>
-                      <Input type="email" placeholder="tu@email.com" {...field} />
+                      <Input type="email" placeholder="tu@email.com" {...field} disabled={isFormSubmitting} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -159,7 +205,7 @@ export function RegisterForm() {
                   <FormItem>
                     <FormLabel className="flex items-center gap-2 text-muted-foreground"><Lock className="w-4 h-4" />Contraseña</FormLabel>
                     <FormControl>
-                      <Input type="password" {...field} />
+                      <Input type="password" {...field} disabled={isFormSubmitting} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -181,7 +227,7 @@ export function RegisterForm() {
                   <FormItem>
                     <FormLabel className="flex items-center gap-2 text-muted-foreground"><Building className="w-4 h-4"/>Nombre del Negocio</FormLabel>
                     <FormControl>
-                      <Input placeholder="Mi Negocio Inc." {...field} />
+                      <Input placeholder="Mi Negocio Inc." {...field} disabled={isFormSubmitting} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -194,7 +240,7 @@ export function RegisterForm() {
                   <FormItem>
                     <FormLabel className="flex items-center gap-2 text-muted-foreground"><Phone className="w-4 h-4"/>Teléfono de Contacto</FormLabel>
                     <FormControl>
-                      <Input placeholder="(555) 123-4567" {...field} />
+                      <Input placeholder="(555) 123-4567" {...field} disabled={isFormSubmitting} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -207,16 +253,16 @@ export function RegisterForm() {
                   <FormItem>
                     <FormLabel className="flex items-center gap-2 text-muted-foreground"><MapPin className="w-4 h-4"/>Dirección de Recogida</FormLabel>
                     <FormControl>
-                      <Textarea placeholder="123 Calle Principal, Ciudad..." className="resize-none" {...field} />
+                      <Textarea placeholder="123 Calle Principal, Ciudad..." className="resize-none" {...field} disabled={isFormSubmitting} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              {isPending && (
+              {aiPending && (
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Loader2 className="h-4 w-4 animate-spin text-primary" />
-                  <span>Validando dirección...</span>
+                  <span>Validando dirección con IA...</span>
                   </div>
               )}
               {completion && (
@@ -236,7 +282,7 @@ export function RegisterForm() {
                           </span>
                           </p>
                       </div>
-                      <Button type="button" variant="outline" size="sm" onClick={applySuggestion} className="border-primary/50 text-primary hover:bg-primary/10 hover:text-primary">
+                      <Button type="button" variant="outline" size="sm" onClick={applySuggestion} className="border-primary/50 text-primary hover:bg-primary/10 hover:text-primary" disabled={isFormSubmitting || !completion}>
                           <CheckCircle className="mr-2 h-4 w-4" />
                           Aplicar
                       </Button>
@@ -254,7 +300,7 @@ export function RegisterForm() {
                 render={({ field }) => (
                 <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md">
                     <FormControl>
-                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                    <Checkbox checked={field.value} onCheckedChange={field.onChange} disabled={isFormSubmitting} />
                     </FormControl>
                     <div className="space-y-1 leading-none">
                     <FormLabel>
@@ -274,7 +320,7 @@ export function RegisterForm() {
                 render={({ field }) => (
                 <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md">
                     <FormControl>
-                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                    <Checkbox checked={field.value} onCheckedChange={field.onChange} disabled={isFormSubmitting} />
                     </FormControl>
                     <div className="space-y-1 leading-none">
                     <FormLabel>
@@ -290,8 +336,12 @@ export function RegisterForm() {
             />
           </div>
 
-          <Button type="submit" className="w-full btn-gradient mt-6" size="lg">
-            Crear Cuenta
+          <Button type="submit" className="w-full btn-gradient mt-6" size="lg" disabled={isFormSubmitting}>
+            {isFormSubmitting ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              "Crear Cuenta"
+            )}
           </Button>
         </form>
       </Form>

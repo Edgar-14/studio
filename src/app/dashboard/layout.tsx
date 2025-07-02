@@ -1,14 +1,16 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { useAuth } from "@/context/AuthContext" // Import useAuth
 import { DashboardNav } from "@/components/DashboardNav"
 import { Logo } from "@/components/Logo"
 import { UserNav } from "@/components/UserNav"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { cn } from "@/lib/utils"
-import { PanelLeft, Globe, Facebook, Instagram, Store, Phone, Mail } from "lucide-react"
+import { PanelLeft, Globe, Facebook, Instagram, Store, Phone, Mail, Loader2 } from "lucide-react"
 import { ThemeToggle } from "@/components/ThemeToggle"
 
 const Footer = () => (
@@ -50,10 +52,29 @@ export default function DashboardLayout({
   children: React.ReactNode
 }) {
   const [isCollapsed, setIsCollapsed] = useState(false)
+  const { user, loading } = useAuth()
+  const router = useRouter()
 
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push("/login")
+    }
+  }, [user, loading, router])
+
+  if (loading || !user) {
+    // Muestra un loader mientras se verifica el estado o si no hay usuario (antes de la redirección)
+    // Esto evita un parpadeo del contenido del dashboard si el usuario no está autenticado
+    return (
+      <div className="flex min-h-screen w-full items-center justify-center bg-background">
+        <Loader2 className="h-16 w-16 animate-spin text-primary" />
+      </div>
+    )
+  }
+
+  // Si el usuario está autenticado, renderiza el layout del dashboard
   return (
     <div className="flex min-h-screen w-full flex-col bg-background/95">
-       <aside
+      <aside
         className={cn(
           "fixed inset-y-0 left-0 z-10 hidden flex-col border-r bg-background/80 backdrop-blur-xl transition-all duration-300 sm:flex",
           isCollapsed ? "w-16" : "w-60"
@@ -70,7 +91,7 @@ export default function DashboardLayout({
             className="flex items-center gap-2 font-semibold"
           >
             <Logo className="h-8 w-auto" />
-             <span className={cn("font-bold text-lg", isCollapsed && "hidden")}>
+            <span className={cn("font-bold text-lg", isCollapsed && "hidden")}>
               BeFast
             </span>
           </Link>
@@ -95,11 +116,11 @@ export default function DashboardLayout({
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="sm:max-w-xs bg-background/80 backdrop-blur-xl p-0">
-                 <div className="flex h-16 items-center border-b px-4">
-                    <Link href="/dashboard" className="flex items-center gap-2 font-semibold">
-                        <Logo className="h-8 w-auto" />
-                        <span className="font-bold text-lg">BeFast</span>
-                    </Link>
+                <div className="flex h-16 items-center border-b px-4">
+                  <Link href="/dashboard" className="flex items-center gap-2 font-semibold">
+                    <Logo className="h-8 w-auto" />
+                    <span className="font-bold text-lg">BeFast</span>
+                  </Link>
                 </div>
                 <div className="overflow-auto py-4">
                   <DashboardNav isCollapsed={false} />
