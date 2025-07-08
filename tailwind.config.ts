@@ -1,12 +1,14 @@
-import type {Config} from 'tailwindcss';
+import type { Config } from 'tailwindcss'
 
-export default {
-  darkMode: ['class'],
+const config = {
+  darkMode: ["class"],
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
+    './pages/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
+    './app/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx}',
+	],
+  prefix: "",
   theme: {
     container: {
       center: true,
@@ -16,9 +18,6 @@ export default {
       },
     },
     extend: {
-      fontFamily: {
-        sans: ['var(--font-sans)', 'sans-serif'],
-      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -53,6 +52,12 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // Custom logo colors from globals.css
+        'logo-blue-base': 'hsl(var(--logo-blue-base))',
+        'logo-blue-light': 'hsl(var(--logo-blue-light))',
+        'logo-blue-dark': 'hsl(var(--logo-blue-dark))',
+        'logo-blue-mid': 'hsl(var(--logo-blue-mid))',
+        'logo-blue-highlight': 'hsl(var(--logo-blue-highlight))',
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -60,28 +65,36 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
-        'accordion-down': {
-          from: {
-            height: '0',
-          },
-          to: {
-            height: 'var(--radix-accordion-content-height)',
-          },
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
-        'accordion-up': {
-          from: {
-            height: 'var(--radix-accordion-content-height)',
-          },
-          to: {
-            height: '0',
-          },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
         },
+        "pulse-glow": { // From globals.css
+          "0%, 100%": { boxShadow: "0 0 0 0 hsla(var(--primary), 0.5)" },
+          "50%": { boxShadow: "0 0 0 10px hsla(var(--primary), 0)" },
+        },
+        "glowRotate": { // From globals.css
+          from: { transform: "translate(-50%, -50%) rotate(0deg)" },
+          to: { transform: "translate(-50%, -50%) rotate(360deg)" },
+        }
       },
       animation: {
-        'accordion-down': 'accordion-down 0.2s ease-out',
-        'accordion-up': 'accordion-up 0.2s ease-out',
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+        "pulse-glow": "pulse-glow 2s infinite", // From globals.css
+        "glowRotate": "glowRotate 4s linear infinite", // From globals.css
+      },
+      fontFamily: {
+        sans: ['var(--font-inter)', 'sans-serif'],
+        grotesk: ['var(--font-space-grotesk)', 'sans-serif'],
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
-} satisfies Config;
+  plugins: [require("tailwindcss-animate")],
+} satisfies Config
+
+export default config

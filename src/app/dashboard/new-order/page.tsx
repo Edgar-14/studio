@@ -1,46 +1,64 @@
-"use client"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+// src/app/dashboard/new-order/page.tsx
+'use client'
+
 import { AddressAssistantForm } from "./AddressAssistantForm"
-import { APIProvider } from "@vis.gl/react-google-maps"
+import { MapComponent } from "./Map";
+import { useState } from 'react';
+import { useAuth } from '@/context/AuthContext';
+import { Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Button } from "@/components/ui/button";
+
+type LatLng = { lat: number; lng: number };
 
 export default function NewOrderPage() {
-  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
-  if (!apiKey) {
-    // A key is required for the map to work.
-    // You can get one from https://console.cloud.google.com/google/maps-apis/
+  const { user, loading: authLoading, businessData } = useAuth();
+  const router = useRouter();
+
+  const [mapCenter, setMapCenter] = useState<LatLng>(businessData?.defaultPickupAddress || { lat: 19.2433, lng: -103.7250 });
+  const [markerPosition, setMarkerPosition] = useState<LatLng | null>(null);
+
+  if (authLoading) {
+    return <div className="flex h-screen items-center justify-center"><Loader2 className="h-8 w-8 animate-spin" /></div>;
+  }
+
+  if (!user) {
+    router.replace('/login');
+    return null;
+  }
+
+  if (!businessData || !businessData.defaultPickupAddress) {
     return (
-       <div className="mx-auto grid w-full max-w-6xl flex-1 auto-rows-max gap-4">
-        <div className="flex items-center gap-4">
-          <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">
-            Crear Nuevo Pedido
-          </h1>
+      <div className="flex h-[calc(100vh-80px)] items-center justify-center p-4">
+        <div className="max-w-lg text-center p-8 border rounded-lg shadow-md glass-card">
+          <h2 className="text-xl font-bold text-destructive mb-4">Configuración Incompleta</h2>
+          <p className="text-foreground mb-4">Para crear pedidos, tu negocio debe tener una dirección de recogida.</p>
+          <Button onClick={() => router.push('/dashboard/settings')} className="btn-gradient mt-4">Ir a Configuración</Button>
         </div>
-        <Card className="glass-card">
-          <CardHeader>
-             <CardTitle>Error de Configuración</CardTitle>
-            <CardDescription>
-              La clave de API de Google Maps no está configurada. El mapa no funcionará.
-            </CardDescription>
-          </CardHeader>
-           <CardContent>
-             <p className="text-sm text-destructive">Por favor, añade tu NEXT_PUBLIC_GOOGLE_MAPS_API_KEY al archivo .env.</p>
-          </CardContent>
-        </Card>
       </div>
-    )
+    );
   }
 
   return (
-    <APIProvider apiKey={apiKey!}>
-       <div className="mx-auto grid w-full flex-1 auto-rows-max gap-4">
-        <AddressAssistantForm />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start p-4 md:p-8">
+      <div className="space-y-6">
+        <div className="grid gap-2">
+            <h1 className="text-3xl font-bold">Crear Nuevo Pedido</h1>
+            <p className="text-muted-foreground">
+              Tu punto de recogida: <span className="font-semibold">{businessData.defaultPickupAddress.description}</span>
+            </p>
+        </div>
+        <AddressAssistantForm
+          setMapCenter={setMapCenter}
+          setMarkerPosition={setMarkerPosition}
+          deliveryCoordinates={markerPosition}
+        />
       </div>
-    </APIProvider>
+      <div className="mt-8 md:mt-0 md:sticky top-24">
+        <div className="w-full h-[60vh] md:h-[80vh] max-h-[700px] rounded-lg overflow-hidden shadow-2xl glass-card">
+          <MapComponent center={mapCenter} markerPosition={markerPosition} />
+        </div>
+      </div>
+    </div>
   )
 }
