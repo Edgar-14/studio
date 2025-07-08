@@ -1,10 +1,11 @@
-"use client"
+// Placeholder for shadcn/ui Select component
+// Run `npx shadcn-ui@latest add select`
 
 import * as React from "react"
 import * as SelectPrimitive from "@radix-ui/react-select"
 import { Check, ChevronDown, ChevronUp } from "lucide-react"
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils" // Assuming utils.ts will be created by shadcn/ui init
 
 const Select = SelectPrimitive.Root
 

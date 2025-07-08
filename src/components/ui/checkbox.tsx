@@ -1,10 +1,11 @@
-"use client"
+// Placeholder for shadcn/ui Checkbox component
+// Run `npx shadcn-ui@latest add checkbox`
 
 import * as React from "react"
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
 import { Check } from "lucide-react"
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils" // Assuming utils.ts will be created by shadcn/ui init
 
 const Checkbox = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,

@@ -1,44 +1,27 @@
-import type {Metadata} from 'next';
+// src/app/layout.tsx
+import { AuthProvider } from '@/context/AuthContext';
+import { ApiProvider } from '@vis.gl/react-google-maps';
+import { Toaster } from 'sonner';
 import './globals.css';
-import { Toaster } from "@/components/ui/toaster"
-import { cn } from '@/lib/utils';
-import { Inter } from 'next/font/google'
+import { Inter, Space_Grotesk } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
-import { AuthProvider } from '@/context/AuthContext'; // Import AuthProvider
 
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-sans',
-});
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
+const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space-grotesk' });
 
-export const metadata: Metadata = {
-  title: 'BeFast Partner AI',
-  description: 'Panel de socios impulsado por IA para la gestión de entregas.',
-  manifest: "/manifest.json",
-};
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const googleMapsApiKey = process.env.NEXT_PUBLIC_Maps_API_KEY!;
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
   return (
     <html lang="es" suppressHydrationWarning>
-       <head>
-        <link rel="icon" href="/android-chrome-192x192.png" type="image/png" sizes="192x192" />
-        <link rel="manifest" href="/manifest.json" />
-      </head>
-      <body className={cn("font-sans antialiased", inter.variable)}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <AuthProvider>
-            {children}
-            <Toaster />
-          </AuthProvider>
+      <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased`}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ApiProvider apiKey={googleMapsApiKey}>
+            <AuthProvider>
+              {children}
+              <Toaster position="top-right" richColors />
+            </AuthProvider>
+          </ApiProvider>
         </ThemeProvider>
       </body>
     </html>

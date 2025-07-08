@@ -1,50 +1,62 @@
-"use client"
+// src/context/AuthContext.tsx
+'use client';
 
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { User as FirebaseUser, onAuthStateChanged } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { onAuthStateChanged, User } from 'firebase/auth';
+import { doc, getDoc, DocumentData } from 'firebase/firestore';
+import { auth, db } from '@/lib/firebase';
 import { Loader2 } from 'lucide-react';
 
 interface AuthContextType {
-  user: FirebaseUser | null;
+  user: User | null;
+  businessData: DocumentData | null;
   loading: boolean;
+  isAdmin: boolean;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType>({ user: null, businessData: null, loading: true, isAdmin: false });
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<FirebaseUser | null>(null);
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
+  const [businessData, setBusinessData] = useState<DocumentData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
+      setIsAdmin(false);
+      setBusinessData(null);
+
+      if (currentUser) {
+        const idTokenResult = await currentUser.getIdTokenResult(true);
+        setIsAdmin(!!idTokenResult.claims.admin);
+
+        const businessDocRef = doc(db, 'businesses', currentUser.uid);
+        const businessDoc = await getDoc(businessDocRef);
+        if (businessDoc.exists()) {
+          setBusinessData(businessDoc.data());
+        }
+      }
       setLoading(false);
     });
 
-    // Cleanup subscription on unmount
     return () => unsubscribe();
   }, []);
 
   if (loading) {
     return (
-      <div className="flex min-h-screen w-full items-center justify-center">
-        <Loader2 className="h-16 w-16 animate-spin text-primary" />
+      <div className="flex h-screen w-full items-center justify-center bg-background">
+        <Loader2 className="h-8 w-8 animate-spin" />
       </div>
     );
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading }}>
+    <AuthContext.Provider value={{ user, businessData, loading, isAdmin }}>
       {children}
     </AuthContext.Provider>
   );
-};
+}
 
-export const useAuth = (): AuthContextType => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
+export const useAuth = () => useContext(AuthContext);
