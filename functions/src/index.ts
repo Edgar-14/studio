@@ -169,12 +169,85 @@ export const stripeWebhook = functions.region(REGION).https.onRequest(async (req
 
     if (event.type === 'checkout.session.completed') {
         const session = event.data.object as Stripe.Checkout.Session;
-        const userId = session.metadata!.userId;
-        const planId = session.metadata!.planId;
-        const creditsToAdd = 100; // Ejemplo: Deberías buscar los créditos del planId en tu DB
 
-        const businessRef = db.collection('businesses').doc(userId);
-        await businessRef.update({ credits: admin.firestore.FieldValue.increment(creditsToAdd) });
+        if (!session.metadata) {
+            functions.logger.error("Stripe webhook checkout.session.completed missing metadata", session);
+            res.status(400).send("Webhook Error: Missing metadata in session.");
+            return;
+        }
+
+        const userId = session.metadata.userId;
+        const planId = session.metadata.planId;
+
+        if (!userId || !planId) {
+            functions.logger.error("Stripe webhook checkout.session.completed missing userId or planId in metadata", { metadata: session.metadata });
+            res.status(400).send("Webhook Error: Missing userId or planId in metadata.");
+            return;
+        }
+
+        let creditsToAdd = 0;
+
+        try {
+            const appSettingsDoc = await db.collection('system_config').doc('app_settings').get();
+            if (appSettingsDoc.exists) {
+                const appConfig = appSettingsDoc.data();
+                // Ensure stripePlans exists and is an array before calling find
+                const plan = appConfig?.stripePlans && Array.isArray(appConfig.stripePlans)
+                             ? appConfig.stripePlans.find((p: any) => p.id === planId)
+                             : undefined;
+
+                if (plan && plan.credits) {
+                    creditsToAdd = parseInt(String(plan.credits), 10);
+                    if (plan.bonusCredits) {
+                         creditsToAdd += parseInt(String(plan.bonusCredits), 10);
+                    }
+                } else {
+                    functions.logger.error(`Plan with ID ${planId} not found or credits not defined in system_config/app_settings.`);
+                }
+            } else {
+                functions.logger.error('system_config/app_settings document not found.');
+            }
+        } catch (dbError: any) {
+            functions.logger.error(`Error fetching plan details from Firestore for planId ${planId}:`, dbError);
+            // For critical payment processing, consider how to handle DB errors.
+            // Options: retry, queue for later processing, or alert admin.
+            // For now, creditsToAdd remains 0, and the issue is logged.
+        }
+
+        if (creditsToAdd > 0) {
+            const businessRef = db.collection('businesses').doc(userId);
+            const creditAuditRef = businessRef.collection('creditAudits').doc();
+
+            try {
+                await db.runTransaction(async (t) => {
+                    // It's good practice to read the business doc within the transaction
+                    // if you need to make decisions based on its current state,
+                    // though here we are just incrementing.
+                    t.update(businessRef, { credits: admin.firestore.FieldValue.increment(creditsToAdd) });
+                    t.set(creditAuditRef, {
+                        event: "stripe_payment_completed",
+                        stripeSessionId: session.id,
+                        planId: planId,
+                        amountAdded: creditsToAdd,
+                        reason: `Payment for plan ${planId} via Stripe.`, // More descriptive reason
+                        timestamp: admin.firestore.FieldValue.serverTimestamp(),
+                        // Storing amount paid and currency might also be useful for audit
+                        // amountPaid: session.amount_total,
+                        // currency: session.currency,
+                    });
+                });
+                functions.logger.info(`Successfully added ${creditsToAdd} credits to business ${userId} for plan ${planId}. Audit ID: ${creditAuditRef.id}`);
+            } catch (transactionError: any) {
+                functions.logger.error(`Transaction failed for adding credits to ${userId} for plan ${planId}:`, transactionError);
+                // Handle transaction error, perhaps by alerting or queuing for retry
+                res.status(500).send("Internal server error during credit update."); // Let Stripe know something went wrong server-side
+                return;
+            }
+        } else {
+            functions.logger.warn(`No credits added for user ${userId} with plan ${planId}. Calculated credits to add was ${creditsToAdd}. This might be due to missing plan configuration or zero credits defined for the plan.`);
+            // If creditsToAdd is 0 due to a configuration issue, it's important to investigate.
+            // You might want to respond differently to Stripe if this is an unexpected scenario.
+        }
     }
     res.json({received: true});
 });
